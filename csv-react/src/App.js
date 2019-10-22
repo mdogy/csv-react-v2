@@ -16,7 +16,7 @@ class App extends Component {
     ).then(
       text => {
         this.setState({value: text});
-        console.log(this.state.value);
+        console.log(csv2data(text));
       }
     )
   }
@@ -37,26 +37,18 @@ class App extends Component {
 
 }
 
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+function csv2data(csv_text){
+  let data = csv_text.match(/[^\r\n]+/g);
+  let column_names = data[0].split(',');
+  column_names[0]='id';
+  data = data.slice(1);
+  let filtered_data = data.filter(datarow=> datarow.length>1);
+  let rows = filtered_data.map( datarow => {
+      let row ={};
+      column_names.forEach( (key, i) => row[key]=datarow.split(',')[i] )
+      return row;
+    });
+  return rows;
+}
 
 export default App;
