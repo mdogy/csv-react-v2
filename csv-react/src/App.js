@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
 
+const DATAURL="https://gist.githubusercontent.com/mdogy/e4e4fa38e11c3315a9ecf93149c793ee/raw/672640aa4c0292b985c00f10dc39348ff404545f/CUNY_Alum.csv"
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -12,7 +14,7 @@ class App extends Component {
 
   componentDidMount (){
     // This is where we get the data
-    fetch(process.env.PUBLIC_URL + '/CUNY_Alum.csv').then(
+    fetch(DATAURL).then(
       response =>  response.text()
     ).then(
       text => {
@@ -38,13 +40,13 @@ class App extends Component {
 }
 
 function DataTable (props){
-  let data = props.data;
+  const data = props.data;
   let output = <div><strong>No Data</strong></div>;
   if (props.data && props.data.length>1) {
     let columns = Object.keys(data[0]);
     console.log(columns);
-    let head = columns.map(col => <th key={"head"+col}>{col}</th>);
-    let body = data.map( (row,ind) => (
+    const head = columns.map(col => <th key={"head"+col}>{col}</th>);
+    const body = data.map( (row,ind) => (
       <tr key={"row"+ind}>{columns.map( col =>(
           <td key={col+ind}>{row[col]}</td>
           ))}</tr>
@@ -72,10 +74,10 @@ function csv2data(csv_text){
   let column_names = data[0].split(',');
   column_names[0]='id';
   data = data.slice(1);
-  let filtered_data = data.filter(
+  const filtered_data = data.filter(
     datarow=> (datarow.length>1)
     );
-  let rows = filtered_data.map( datarow => {
+   const rows = filtered_data.map( datarow => {
       let row ={};
       column_names.forEach( 
           (key, i) => {
