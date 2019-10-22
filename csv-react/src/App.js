@@ -43,22 +43,17 @@ function DataTable (props){
   const data = props.data;
   let output = <div><strong>No Data</strong></div>;
   if (props.data && props.data.length>1) {
-    let columns = Object.keys(data[0]);
+    const columns = Object.keys(data[0]);
     console.log(columns);
-    const head = columns.map(col => <th key={"head"+col}>{col}</th>);
-    const body = data.map( (row,ind) => (
-      <tr key={"row"+ind}>{columns.map( col =>(
-          <td key={col+ind}>{row[col]}</td>
-          ))}</tr>
-        )
-      );
     output = (
       <table>
       <thead>
-      <tr key="headrow">{head}</tr>
+      <DataTableHeadRow columns={columns}></DataTableHeadRow>
       </thead>
       <tbody>
-      {body}
+        {data.map( (row,ind) => (
+          <DataTableRow key={"row"+ind} row={row} ind={ind} columns={columns}>
+          </DataTableRow>))}
       </tbody>
       </table>)
   }
@@ -67,6 +62,29 @@ function DataTable (props){
       {output}
     </div>
   )
+}
+
+function DataTableHeadRow(props){
+  const columns = props.columns;
+  return (<tr key="headrow">{
+    columns.map(col => <DataTableHeadItem key={"head"+col} col={props.col}>
+    </DataTableHeadItem>)
+  }</tr>)
+}
+
+function DataTableHeadItem(props){
+  return <th>{props.col}</th>;
+}
+
+function DataTableRow (props){
+  return (<tr>{props.columns.map( col =>(
+    <DataTableItem key={col+props.ind} col={col} row={props.row} ind={props.ind}>
+    </DataTableItem>
+          ))}</tr>);
+}
+
+function DataTableItem(props){
+  return <td>{props.row[props.col]}</td>;
 }
 
 function csv2data(csv_text){
