@@ -11,6 +11,7 @@ class App extends Component {
 
 
   componentDidMount (){
+    // This is where we get the data
     fetch(process.env.PUBLIC_URL + '/CUNY_Alum.csv').then(
       response =>  response.text()
     ).then(
@@ -23,18 +24,27 @@ class App extends Component {
   
 
   render() {
+    // This renders the whole page
     return  (
       <div className="App">
         <header className="App-header">
           <h1>Loading a data file</h1>
-          <pre>
-            {this.state.value}
-          </pre>
         </header>
+          <DataTable data={this.state.value}></DataTable>
       </div>
     );
   };
 
+}
+
+function DataTable (props){
+  return (
+    <div>
+      <pre>
+        {props.data}
+      </pre>
+    </div>
+  )
 }
 
 function csv2data(csv_text){
