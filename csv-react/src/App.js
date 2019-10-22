@@ -16,8 +16,7 @@ class App extends Component {
       response =>  response.text()
     ).then(
       text => {
-        this.setState({value: text});
-        console.log(csv2data(text));
+        this.setState({value: csv2data(text)});
       }
     )
   }
@@ -38,11 +37,31 @@ class App extends Component {
 }
 
 function DataTable (props){
+  let data = props.data;
+  let output = <div><strong>No Data</strong></div>;
+  if (props.data && props.data.length>1) {
+    let columns = Object.keys(data[0]);
+    console.log(columns);
+    let head = columns.map(col => <th key={"head"+col}>{col}</th>);
+    let body = data.map( (row,ind) => (
+      <tr key={"row"+ind}>{columns.map( col =>(
+          <td key={col+ind}>{row[col]}</td>
+          ))}</tr>
+        )
+      );
+    output = (
+      <table>
+      <thead>
+      <tr key="headrow">{head}</tr>
+      </thead>
+      <tbody>
+      {body}
+      </tbody>
+      </table>)
+  }
   return (
     <div>
-      <pre>
-        {props.data}
-      </pre>
+      {output}
     </div>
   )
 }
