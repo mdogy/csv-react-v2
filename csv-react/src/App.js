@@ -80,7 +80,8 @@ function csv2data(csv_text){
       column_names.forEach( 
           (key, i) => {
             let item = datarow.split(',')[i];
-            item=item.replace('"','');
+            // Get rid of extra " mark
+            item=item.replace(/"/g,'');
             row[key]=item;
           }
         )
