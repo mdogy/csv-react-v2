@@ -27,7 +27,8 @@ class App extends Component {
     return  (
       <div className="App">
         <header className="App-header">
-          <h1>Loading a data file</h1>
+          <h1>React Loading Data Example</h1>
+          <h2>Famous CUNY Alums</h2>
         </header>
           <DataTable data={this.state.value}></DataTable>
       </div>
@@ -71,10 +72,19 @@ function csv2data(csv_text){
   let column_names = data[0].split(',');
   column_names[0]='id';
   data = data.slice(1);
-  let filtered_data = data.filter(datarow=> datarow.length>1);
+  let filtered_data = data.filter(
+    datarow=> (datarow.length>1)
+    );
   let rows = filtered_data.map( datarow => {
       let row ={};
-      column_names.forEach( (key, i) => row[key]=datarow.split(',')[i] )
+      column_names.forEach( 
+          (key, i) => {
+            let item = datarow.split(',')[i];
+            item=item.replace('"','');
+            row[key]=item;
+          }
+        )
+
       return row;
     });
   return rows;
